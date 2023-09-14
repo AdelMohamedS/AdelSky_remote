@@ -12,6 +12,8 @@
 		E785C7ED2AB39501009BE60A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E785C7EC2AB39501009BE60A /* Assets.xcassets */; };
 		E785C7F02AB39501009BE60A /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E785C7EF2AB39501009BE60A /* Preview Assets.xcassets */; };
 		E785C7F72AB395D4009BE60A /* WeatherData.swift in Sources */ = {isa = PBXBuildFile; fileRef = E785C7F62AB395D4009BE60A /* WeatherData.swift */; };
+		E785C7F92AB39F8D009BE60A /* TabBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E785C7F82AB39F8D009BE60A /* TabBarView.swift */; };
+		E785C7FB2AB3A0B4009BE60A /* SearchWeather.swift in Sources */ = {isa = PBXBuildFile; fileRef = E785C7FA2AB3A0B4009BE60A /* SearchWeather.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -21,6 +23,8 @@
 		E785C7EC2AB39501009BE60A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E785C7EF2AB39501009BE60A /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		E785C7F62AB395D4009BE60A /* WeatherData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherData.swift; sourceTree = "<group>"; };
+		E785C7F82AB39F8D009BE60A /* TabBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarView.swift; sourceTree = "<group>"; };
+		E785C7FA2AB3A0B4009BE60A /* SearchWeather.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchWeather.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -55,6 +59,8 @@
 			children = (
 				E785C7E82AB394FF009BE60A /* AdelSkyApp.swift */,
 				E785C7EA2AB394FF009BE60A /* ContentView.swift */,
+				E785C7F82AB39F8D009BE60A /* TabBarView.swift */,
+				E785C7FA2AB3A0B4009BE60A /* SearchWeather.swift */,
 				E785C7F62AB395D4009BE60A /* WeatherData.swift */,
 				E785C7EC2AB39501009BE60A /* Assets.xcassets */,
 				E785C7EE2AB39501009BE60A /* Preview Content */,
@@ -140,8 +146,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E785C7FB2AB3A0B4009BE60A /* SearchWeather.swift in Sources */,
 				E785C7EB2AB394FF009BE60A /* ContentView.swift in Sources */,
 				E785C7F72AB395D4009BE60A /* WeatherData.swift in Sources */,
+				E785C7F92AB39F8D009BE60A /* TabBarView.swift in Sources */,
 				E785C7E92AB394FF009BE60A /* AdelSkyApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

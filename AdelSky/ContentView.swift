@@ -12,6 +12,7 @@ import CoreLocation
 struct ContentView: View {
     @StateObject private var locationManager = LocationManager()
     @State private var weatherData: WeatherData?
+    @State private var isRefreshing = false
     
     var body: some View {
         VStack {
