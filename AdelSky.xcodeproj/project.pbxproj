@@ -11,6 +11,7 @@
 		E785C7EB2AB394FF009BE60A /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E785C7EA2AB394FF009BE60A /* ContentView.swift */; };
 		E785C7ED2AB39501009BE60A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E785C7EC2AB39501009BE60A /* Assets.xcassets */; };
 		E785C7F02AB39501009BE60A /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E785C7EF2AB39501009BE60A /* Preview Assets.xcassets */; };
+		E785C7F72AB395D4009BE60A /* WeatherData.swift in Sources */ = {isa = PBXBuildFile; fileRef = E785C7F62AB395D4009BE60A /* WeatherData.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -19,6 +20,7 @@
 		E785C7EA2AB394FF009BE60A /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		E785C7EC2AB39501009BE60A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E785C7EF2AB39501009BE60A /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		E785C7F62AB395D4009BE60A /* WeatherData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherData.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -53,6 +55,7 @@
 			children = (
 				E785C7E82AB394FF009BE60A /* AdelSkyApp.swift */,
 				E785C7EA2AB394FF009BE60A /* ContentView.swift */,
+				E785C7F62AB395D4009BE60A /* WeatherData.swift */,
 				E785C7EC2AB39501009BE60A /* Assets.xcassets */,
 				E785C7EE2AB39501009BE60A /* Preview Content */,
 			);
@@ -138,6 +141,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E785C7EB2AB394FF009BE60A /* ContentView.swift in Sources */,
+				E785C7F72AB395D4009BE60A /* WeatherData.swift in Sources */,
 				E785C7E92AB394FF009BE60A /* AdelSkyApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -270,6 +274,8 @@
 				DEVELOPMENT_TEAM = S9DMB2H566;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "We need your location to provide current Weather information.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "We need your location to provide current Weather information.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -299,6 +305,8 @@
 				DEVELOPMENT_TEAM = S9DMB2H566;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "We need your location to provide current Weather information.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "We need your location to provide current Weather information.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
