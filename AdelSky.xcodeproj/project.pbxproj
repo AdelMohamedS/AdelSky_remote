@@ -10,7 +10,9 @@
 		E785C7E92AB394FF009BE60A /* AdelSkyApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = E785C7E82AB394FF009BE60A /* AdelSkyApp.swift */; };
 		E785C7ED2AB39501009BE60A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E785C7EC2AB39501009BE60A /* Assets.xcassets */; };
 		E785C7F02AB39501009BE60A /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E785C7EF2AB39501009BE60A /* Preview Assets.xcassets */; };
-		E785C7FD2AB499C1009BE60A /* TestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E785C7FC2AB499C1009BE60A /* TestView.swift */; };
+		E785C7FD2AB499C1009BE60A /* CurrentWeatherView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E785C7FC2AB499C1009BE60A /* CurrentWeatherView.swift */; };
+		E785C7FF2AB4B2B3009BE60A /* TabBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E785C7FE2AB4B2B3009BE60A /* TabBarView.swift */; };
+		E785C8012AB4B309009BE60A /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E785C8002AB4B309009BE60A /* SettingsView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -18,7 +20,9 @@
 		E785C7E82AB394FF009BE60A /* AdelSkyApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdelSkyApp.swift; sourceTree = "<group>"; };
 		E785C7EC2AB39501009BE60A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E785C7EF2AB39501009BE60A /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		E785C7FC2AB499C1009BE60A /* TestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestView.swift; sourceTree = "<group>"; };
+		E785C7FC2AB499C1009BE60A /* CurrentWeatherView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentWeatherView.swift; sourceTree = "<group>"; };
+		E785C7FE2AB4B2B3009BE60A /* TabBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarView.swift; sourceTree = "<group>"; };
+		E785C8002AB4B309009BE60A /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -52,7 +56,9 @@
 			isa = PBXGroup;
 			children = (
 				E785C7E82AB394FF009BE60A /* AdelSkyApp.swift */,
-				E785C7FC2AB499C1009BE60A /* TestView.swift */,
+				E785C7FC2AB499C1009BE60A /* CurrentWeatherView.swift */,
+				E785C7FE2AB4B2B3009BE60A /* TabBarView.swift */,
+				E785C8002AB4B309009BE60A /* SettingsView.swift */,
 				E785C7EC2AB39501009BE60A /* Assets.xcassets */,
 				E785C7EE2AB39501009BE60A /* Preview Content */,
 			);
@@ -137,7 +143,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E785C7FD2AB499C1009BE60A /* TestView.swift in Sources */,
+				E785C7FD2AB499C1009BE60A /* CurrentWeatherView.swift in Sources */,
+				E785C8012AB4B309009BE60A /* SettingsView.swift in Sources */,
+				E785C7FF2AB4B2B3009BE60A /* TabBarView.swift in Sources */,
 				E785C7E92AB394FF009BE60A /* AdelSkyApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
