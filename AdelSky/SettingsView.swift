@@ -31,18 +31,19 @@ struct SettingsView: View {
     
     var body: some View {
         NavigationStack {
-            Picker(selection: $selectedOption, label: Text("Temperature Units")) {
-                Text("°C").tag(1)
-                Text("°F").tag(2)
-                Text("°K").tag(3)
+            List {
+                Picker(selection: $selectedOption, label: Text("Temperature Units")) {
+                    Text("°C").tag(1)
+                    Text("°F").tag(2)
+                    Text("°K").tag(3)
+                }
+                .onChange(of: selectedOption, perform: { _ in
+                    updateCurrentUnit()
+                    updateCurrentUnitSymbol()
+                })
+                .pickerStyle(.navigationLink)
             }
-            .onChange(of: selectedOption, perform: { _ in
-                updateCurrentUnit()
-                updateCurrentUnitSymbol()
-            })
-            .padding()
-            .pickerStyle(.navigationLink)
-            
+
             .navigationTitle("Settings")
         }
     }

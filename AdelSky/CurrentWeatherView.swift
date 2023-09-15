@@ -65,7 +65,6 @@ struct CurrentWeatherView: View {
         NavigationStack {
             VStack {
                 if let weatherData = weatherData {
-                    TextField("Search", text: .constant(""))
                     AsyncImage(url: URL(string: "https://openweathermap.org/img/wn/\(weatherData.weather[0].icon)@4x.png"))
                     Text("\(weatherData.name), \(weatherData.sys.country)")
                         .font(.title)
@@ -82,8 +81,8 @@ struct CurrentWeatherView: View {
                     ScrollView (.horizontal){
                         HStack {
                             ExtraDetails(textInfo: "Feels like \(Int(round(weatherData.main.feels_like-currentUnit)))°\(currentUnitSymbol)", imageInfo: "thermometer.low")
-                            ExtraDetails(textInfo: "Humidity \(Int(weatherData.main.humidity))", imageInfo: "humidity")
-                            ExtraDetails(textInfo: "Wind Speed: \(Int(round(weatherData.wind.speed)))", imageInfo: "wind")
+                            ExtraDetails(textInfo: "Humidity \(Int(weatherData.main.humidity))%", imageInfo: "humidity")
+                            ExtraDetails(textInfo: "Wind Speed: \(Int(round(weatherData.wind.speed)))m/s", imageInfo: "wind")
                             ExtraDetails(textInfo: "Wind Degrees: \(Int(weatherData.wind.deg))", imageInfo: "wind.circle")
                             ExtraDetails(textInfo: "Pressure: \(Int(weatherData.main.pressure))", imageInfo: "rectangle.compress.vertical")
                         }
@@ -98,38 +97,20 @@ struct CurrentWeatherView: View {
                 }
             }
             .onAppear {
-//                fetchData()
                 locationManager.requestLocation()
             }
             .onReceive(locationManager.$location) { location in
-                    // Fetch weather data when the location is updated
-                    guard let location = location else { return }
-                    fetchData(for: location)
+                guard let location = location else { return }
+                fetchData(for: location)
             }
             .navigationTitle("Weather")
         }
     }
     
-//    func fetchData() {
-//        guard let url = URL(string: "https://api.openweathermap.org/data/2.5/weather?q=Cairo&appid=2ae6cc613328d5b5cdf16fc6985f3a73") else { return }
-//        URLSession.shared.dataTask(with: url) { data, response, error in
-//            guard let data = data else { return }
-//            do {
-//                let weatherData = try JSONDecoder().decode(WeatherData.self, from: data)
-//                DispatchQueue.main.async {
-//                    self.weatherData = weatherData
-//                }
-//            } catch {
-//                print(error.localizedDescription)
-//            }
-//        }.resume()
-//    }
     func fetchData(for location: CLLocation) {
         let apiKey = "2ae6cc613328d5b5cdf16fc6985f3a73"
         
-//        let urlString = "https://api.openweathermap.org/data/2.5/weather?lat=\(location.coordinate.latitude)&lon=\(location.coordinate.longitude)&appid=\(apiKey)"
         guard let url = URL(string: "https://api.openweathermap.org/data/2.5/weather?lat=\(location.coordinate.latitude)&lon=\(location.coordinate.longitude)&appid=\(apiKey)") else { return }
-//        guard let url = URL(string: "https://api.openweathermap.org/data/2.5/weather?q=Cairo&appid=2ae6cc613328d5b5cdf16fc6985f3a73") else { return }
         URLSession.shared.dataTask(with: url) { data, response, error in
             guard let data = data else { return }
             do {
