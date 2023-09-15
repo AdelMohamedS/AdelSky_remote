@@ -1,4 +1,5 @@
 import SwiftUI
+import CoreLocation
 
 struct WeatherData: Codable {
     let coord: Coord
@@ -58,6 +59,7 @@ struct CurrentWeatherView: View {
     @State private var weatherData: WeatherData?
     @Binding var currentUnit: Double
     @Binding var currentUnitSymbol: String
+    @StateObject private var locationManager = LocationManager()
     
     var body: some View {
         NavigationStack {
@@ -90,21 +92,44 @@ struct CurrentWeatherView: View {
                     .background(Color(red: 0.557, green: 0.557, blue: 0.577, opacity: 0.2))
                     .cornerRadius(15)
                     .padding()
+                    Spacer()
                 } else {
                     ProgressView()
                 }
-                Spacer()
             }
             .onAppear {
-                fetchData()
+//                fetchData()
+                locationManager.requestLocation()
+            }
+            .onReceive(locationManager.$location) { location in
+                    // Fetch weather data when the location is updated
+                    guard let location = location else { return }
+                    fetchData(for: location)
             }
             .navigationTitle("Weather")
         }
     }
     
-    func fetchData() {
-        guard let url = URL(string: "https://api.openweathermap.org/data/2.5/weather?q=Cairo&appid=2ae6cc613328d5b5cdf16fc6985f3a73") else { return }
+//    func fetchData() {
+//        guard let url = URL(string: "https://api.openweathermap.org/data/2.5/weather?q=Cairo&appid=2ae6cc613328d5b5cdf16fc6985f3a73") else { return }
+//        URLSession.shared.dataTask(with: url) { data, response, error in
+//            guard let data = data else { return }
+//            do {
+//                let weatherData = try JSONDecoder().decode(WeatherData.self, from: data)
+//                DispatchQueue.main.async {
+//                    self.weatherData = weatherData
+//                }
+//            } catch {
+//                print(error.localizedDescription)
+//            }
+//        }.resume()
+//    }
+    func fetchData(for location: CLLocation) {
+        let apiKey = "2ae6cc613328d5b5cdf16fc6985f3a73"
         
+//        let urlString = "https://api.openweathermap.org/data/2.5/weather?lat=\(location.coordinate.latitude)&lon=\(location.coordinate.longitude)&appid=\(apiKey)"
+        guard let url = URL(string: "https://api.openweathermap.org/data/2.5/weather?lat=\(location.coordinate.latitude)&lon=\(location.coordinate.longitude)&appid=\(apiKey)") else { return }
+//        guard let url = URL(string: "https://api.openweathermap.org/data/2.5/weather?q=Cairo&appid=2ae6cc613328d5b5cdf16fc6985f3a73") else { return }
         URLSession.shared.dataTask(with: url) { data, response, error in
             guard let data = data else { return }
             do {
@@ -132,5 +157,33 @@ struct ExtraDetails: View {
         .background(.gray)
         .foregroundColor(.white)
         .cornerRadius(15)
+    }
+}
+
+class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
+    private let locationManager = CLLocationManager()
+    @Published var location: CLLocation?
+    
+    override init() {
+        super.init()
+        locationManager.delegate = self
+    }
+    
+    
+    func requestLocation() {
+        locationManager.requestWhenInUseAuthorization()
+        locationManager.startUpdatingLocation()
+    }
+    
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        guard let location = locations.last else { return }
+        self.location = location
+        locationManager.stopUpdatingLocation()
+    }
+    
+    
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        print(error.localizedDescription)
     }
 }
