@@ -2,54 +2,70 @@ import SwiftUI
 
 struct SearchWeatherView: View {
     @Binding var searchTerm: String
-    @State var weatherData: WeatherData?
-    @Binding var currentUnit: Double
-    @Binding var currentUnitSymbol: String
+    @State private var weatherData: WeatherData?
+    @Binding var selected: Int
+    @Binding var extraDetailsSelection: Int
     
     var body: some View {
+        let columns = [GridItem(.flexible()), GridItem(.flexible())]
         NavigationStack {
-            VStack {
+            List {
                 if let weatherData = weatherData {
-                    AsyncImage(url: URL(string: "https://openweathermap.org/img/wn/\(weatherData.weather[0].icon)@4x.png"))
-                    Text("\(weatherData.name), \(weatherData.sys.country)")
-                        .font(.title)
-                    Text("\(Int(round(weatherData.main.temp-currentUnit)))°\(currentUnitSymbol)")
-                        .font(.largeTitle)
                     HStack {
-                        Text("H: \(Int(round(weatherData.main.temp_max-currentUnit)))°\(currentUnitSymbol)")
-                            .font(.subheadline)
-                        Text("L: \(Int(round(weatherData.main.temp_min-currentUnit)))°\(currentUnitSymbol)")
-                            .font(.subheadline)
-                    }
-                    Text(weatherData.weather[0].description)
-                        .font(.title2)
-                    ScrollView (.horizontal){
-                        HStack {
-                            ExtraDetails(textInfo: "Feels like \(Int(round(weatherData.main.feels_like-currentUnit)))°\(currentUnitSymbol)", imageInfo: "thermometer.low")
-                            ExtraDetails(textInfo: "Humidity \(Int(weatherData.main.humidity))%", imageInfo: "humidity")
-                            ExtraDetails(textInfo: "Wind Speed: \(Int(round(weatherData.wind.speed)))m/s", imageInfo: "wind")
-                            ExtraDetails(textInfo: "Wind Degrees: \(Int(weatherData.wind.deg))", imageInfo: "wind.circle")
-                            ExtraDetails(textInfo: "Pressure: \(Int(weatherData.main.pressure))", imageInfo: "rectangle.compress.vertical")
+                        if (extraDetailsSelection == 1) {Spacer()}
+                        VStack {
+                            AsyncImage(url: URL(string: "https://openweathermap.org/img/wn/\(weatherData.weather[0].icon)@4x.png"))
+                            Text("\(weatherData.name), \(weatherData.sys.country)")
+                                .font(.title)
+                            Text(convertTemperatureUnit(number: weatherData.main.temp, selected: selected))
+                                .font(.largeTitle)
+                            HStack {
+                                Text("H: \(convertTemperatureUnit(number: weatherData.main.temp_max, selected: selected))")
+                                    .font(.subheadline)
+                                Text("L: \(convertTemperatureUnit(number: weatherData.main.temp_min, selected: selected))")
+                                    .font(.subheadline)
+                            }
+                            Text(weatherData.weather[0].description)
+                                .font(.title2)
+                            
+                            if (extraDetailsSelection == 2) {
+                                LazyVGrid(columns: columns) {
+                                    ExtraDetails(textInfo: "Feels like", textInfo2: convertTemperatureUnit(number: weatherData.main.feels_like, selected: selected), imageInfo: "thermometer.low")
+                                    ExtraDetails(textInfo: "Humidity", textInfo2: "\(Int(weatherData.main.humidity))%", imageInfo: "humidity")
+                                    ExtraDetails(textInfo: "Wind Speed", textInfo2: "\(Int(round(weatherData.wind.speed)))m/s", imageInfo: "wind")
+                                    ExtraDetails(textInfo: "Wind Degrees", textInfo2: "\(Int(weatherData.wind.deg))", imageInfo: "wind.circle")
+                                    ExtraDetails(textInfo: "Pressure", textInfo2: "\(Int(weatherData.main.pressure))hPa", imageInfo: "rectangle.compress.vertical")
+                                    ExtraDetails(textInfo: "Visibility", textInfo2: "\(weatherData.visibility/1000)km", imageInfo: "eye")
+                                }
+                            }
                         }
-                        .padding()
+                        if (extraDetailsSelection == 1) {Spacer()}
                     }
-                    .background(Color(red: 0.557, green: 0.557, blue: 0.577, opacity: 0.2))
-                    .cornerRadius(15)
-                    .padding()
-                    Spacer()
+                    if (extraDetailsSelection == 1){
+                        ScrollView (.horizontal){
+                            HStack {
+                                ExtraDetails(textInfo: "Feels like", textInfo2: convertTemperatureUnit(number: weatherData.main.feels_like, selected: selected), imageInfo: "thermometer.low")
+                                ExtraDetails(textInfo: "Humidity", textInfo2: "\(Int(weatherData.main.humidity))%", imageInfo: "humidity")
+                                ExtraDetails(textInfo: "Wind Speed", textInfo2: "\(Int(round(weatherData.wind.speed)))m/s", imageInfo: "wind")
+                                ExtraDetails(textInfo: "Wind Degrees", textInfo2: "\(Int(weatherData.wind.deg))", imageInfo: "wind.circle")
+                                ExtraDetails(textInfo: "Pressure", textInfo2: "\(Int(weatherData.main.pressure))hPa", imageInfo: "rectangle.compress.vertical")
+                                ExtraDetails(textInfo: "Visibility", textInfo2: "\(weatherData.visibility/1000)km", imageInfo: "eye")
+                            }
+                        }
+                    }
                 }
                 else {
-                    Text("No data available")
+                    Text("Search Cities across the Globe")
                 }
             }
             .navigationTitle("Search")
-            .searchable(text: $searchTerm, prompt: "Search Weather by City")
             .onChange(of: searchTerm) { value in
                 if let url = makeWeatherURL(for: value) {
                     fetchWeatherData(from: url)
                 }
             }
         }
+        .searchable(text: $searchTerm, prompt: "Search Weather by City")
     }
     
     func makeWeatherURL(for city: String) -> URL? {
@@ -68,27 +84,37 @@ struct SearchWeatherView: View {
         // Return the URL object from the components object
         return components?.url
     }
-
     
     func fetchWeatherData(from url: URL) {
-        // Create a URLSession data task with the URL
+        print("Fetching weather data from URL: \(url)")
         URLSession.shared.dataTask(with: url) { data, response, error in
             // Check for errors and status code
-            guard let data = data, error == nil, let response = response as? HTTPURLResponse, response.statusCode == 200 else {
-                print("Error fetching weather data")
+            guard let data = data, error == nil, let response = response as? HTTPURLResponse else {
+                if let error = error {
+                    print("Error: \(error)")
+                } else {
+                    print("No data received")
+                }
                 return
             }
             
-            // Decode the JSON data into a WeatherData object
-            let decoder = JSONDecoder()
-            if let weatherData = try? decoder.decode(WeatherData.self, from: data) {
-                // Update the state variable on the main thread
-                DispatchQueue.main.async {
-                    self.weatherData = weatherData
+            print("Response Status Code: \(response.statusCode)")
+            
+            if response.statusCode == 200 {
+                // Decode the JSON data into a WeatherData object
+                let decoder = JSONDecoder()
+                if let weatherData = try? decoder.decode(WeatherData.self, from: data) {
+                    // Update the state variable on the main thread
+                    DispatchQueue.main.async {
+                        self.weatherData = weatherData
+                    }
+                } else {
+                    print("Error decoding weather data")
                 }
             } else {
-                print("Error decoding weather data")
+                print("Non-200 response: \(response.statusCode)")
             }
         }.resume()
     }
+    
 }

@@ -8,21 +8,21 @@
 import SwiftUI
 
 struct TabBarView: View {
-    @State var selectedOption: Int = 1
-    @State var currentUnit: Double = 273.15
-    @State var currentUnitSymbol: String = "C"
+    @AppStorage ("key") var selected: Int = 1
+    @AppStorage ("key2") var extraDetailsSelection: Int = 1
     @State var searchTerm: String = ""
+    @State var weatherData: WeatherData?
     var body: some View {
         TabView {
-            CurrentWeatherView(currentUnit: $currentUnit, currentUnitSymbol: $currentUnitSymbol)
+            CurrentWeatherView(weatherData: $weatherData, selected: $selected, extraDetailsSelection: $extraDetailsSelection)
                 .tabItem {
                     Label("Current", systemImage: "location")
                 }
-            SearchWeatherView(searchTerm: $searchTerm, currentUnit: $currentUnit, currentUnitSymbol: $currentUnitSymbol)
+            SearchWeatherView(searchTerm: $searchTerm, selected: $selected, extraDetailsSelection: $extraDetailsSelection)
                 .tabItem {
                     Label("Search", systemImage: "magnifyingglass")
                 }
-            SettingsView(selectedOption: $selectedOption, currentUnit: $currentUnit, currentUnitSymbol: $currentUnitSymbol)
+            SettingsView(selected: $selected, extraDetailsSelection: $extraDetailsSelection)
                 .tabItem {
                     Label("Settings", systemImage: "gear")
                 }

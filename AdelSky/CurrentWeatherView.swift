@@ -1,109 +1,77 @@
 import SwiftUI
 import CoreLocation
 
-struct WeatherData: Codable {
-    let coord: Coord
-    let weather: [Weather]
-    let base: String
-    let main: Main
-    let visibility: Int
-    let wind: Wind
-    let clouds: Clouds
-    let dt: Int
-    let sys: Sys
-    let timezone: Int
-    let id: Int
-    let name: String
-    let cod: Int
-}
-
-struct Coord: Codable {
-    let lon: Double
-    let lat: Double
-}
-
-struct Weather: Codable {
-    let id: Int
-    let main: String
-    let description: String
-    let icon: String
-}
-
-struct Main: Codable {
-    let temp: Double
-    let feels_like: Double
-    let temp_min: Double
-    let temp_max: Double
-    let pressure: Int
-    let humidity: Int
-}
-
-struct Wind: Codable {
-    let speed: Double
-    let deg: Int
-}
-
-struct Clouds: Codable {
-    let all: Int
-}
-
-struct Sys: Codable {
-    let type: Int
-    let id: Int
-    let country: String
-    let sunrise: Int
-    let sunset: Int
-}
-
 struct CurrentWeatherView: View {
-    @State private var weatherData: WeatherData?
-    @Binding var currentUnit: Double
-    @Binding var currentUnitSymbol: String
+    @Binding var weatherData: WeatherData?
+    @Binding var selected: Int
+    @Binding var extraDetailsSelection: Int
     @StateObject private var locationManager = LocationManager()
-    
     var body: some View {
+        let columns = [GridItem(.flexible()), GridItem(.flexible())]
         NavigationStack {
-            VStack {
-                if let weatherData = weatherData {
-                    AsyncImage(url: URL(string: "https://openweathermap.org/img/wn/\(weatherData.weather[0].icon)@4x.png"))
-                    Text("\(weatherData.name), \(weatherData.sys.country)")
-                        .font(.title)
-                    Text("\(Int(round(weatherData.main.temp-currentUnit)))°\(currentUnitSymbol)")
-                        .font(.largeTitle)
-                    HStack {
-                        Text("H: \(Int(round(weatherData.main.temp_max-currentUnit)))°\(currentUnitSymbol)")
-                            .font(.subheadline)
-                        Text("L: \(Int(round(weatherData.main.temp_min-currentUnit)))°\(currentUnitSymbol)")
-                            .font(.subheadline)
-                    }
-                    Text(weatherData.weather[0].description)
-                        .font(.title2)
-                    ScrollView (.horizontal){
+            if let weatherData = weatherData {
+                ScrollView {
+                    VStack {
+                        AsyncImage(url: URL(string: "https://openweathermap.org/img/wn/\(weatherData.weather[0].icon)@4x.png"))
+                        Text("\(weatherData.name), \(weatherData.sys.country)")
+                            .font(.title)
+                        Text(convertTemperatureUnit(number: weatherData.main.temp, selected: selected))
+                            .font(.largeTitle)
                         HStack {
-                            ExtraDetails(textInfo: "Feels like \(Int(round(weatherData.main.feels_like-currentUnit)))°\(currentUnitSymbol)", imageInfo: "thermometer.low")
-                            ExtraDetails(textInfo: "Humidity \(Int(weatherData.main.humidity))%", imageInfo: "humidity")
-                            ExtraDetails(textInfo: "Wind Speed: \(Int(round(weatherData.wind.speed)))m/s", imageInfo: "wind")
-                            ExtraDetails(textInfo: "Wind Degrees: \(Int(weatherData.wind.deg))", imageInfo: "wind.circle")
-                            ExtraDetails(textInfo: "Pressure: \(Int(weatherData.main.pressure))", imageInfo: "rectangle.compress.vertical")
+                            Text("H: \(convertTemperatureUnit(number: weatherData.main.temp_max, selected: selected))")
+                                .font(.subheadline)
+                            Text("L: \(convertTemperatureUnit(number: weatherData.main.temp_min, selected: selected))")
+                                .font(.subheadline)
                         }
-                        .padding()
+                        Text(weatherData.weather[0].description)
+                            .font(.title2)
+                        
+                        
+                        if (extraDetailsSelection == 1){
+                            ScrollView (.horizontal){
+                                HStack {
+                                    ExtraDetails(textInfo: "Feels like", textInfo2: convertTemperatureUnit(number: weatherData.main.feels_like, selected: selected), imageInfo: "thermometer.low")
+                                    ExtraDetails(textInfo: "Humidity", textInfo2: "\(Int(weatherData.main.humidity))%", imageInfo: "humidity")
+                                    ExtraDetails(textInfo: "Wind Speed", textInfo2: "\(Int(round(weatherData.wind.speed)))m/s", imageInfo: "wind")
+                                    ExtraDetails(textInfo: "Wind Degrees", textInfo2: "\(Int(weatherData.wind.deg))", imageInfo: "wind.circle")
+                                    ExtraDetails(textInfo: "Pressure", textInfo2: "\(Int(weatherData.main.pressure))hPa", imageInfo: "rectangle.compress.vertical")
+                                    ExtraDetails(textInfo: "Visibility", textInfo2: "\(weatherData.visibility/1000)km", imageInfo: "eye")
+                                }
+                                .padding()
+                            }
+                            .background(Color(red: 0.557, green: 0.557, blue: 0.577, opacity: 0.2))
+                            .cornerRadius(10)
+                            .padding()
+                        }
+                        else if (extraDetailsSelection == 2) {
+                            LazyVGrid(columns: columns) {
+                                ExtraDetails(textInfo: "Feels like", textInfo2: convertTemperatureUnit(number: weatherData.main.feels_like, selected: selected), imageInfo: "thermometer.low")
+                                ExtraDetails(textInfo: "Humidity", textInfo2: "\(Int(weatherData.main.humidity))%", imageInfo: "humidity")
+                                ExtraDetails(textInfo: "Wind Speed", textInfo2: "\(Int(round(weatherData.wind.speed)))m/s", imageInfo: "wind")
+                                ExtraDetails(textInfo: "Wind Degrees", textInfo2: "\(Int(weatherData.wind.deg))", imageInfo: "wind.circle")
+                                ExtraDetails(textInfo: "Pressure", textInfo2: "\(Int(weatherData.main.pressure))hPa", imageInfo: "rectangle.compress.vertical")
+                                ExtraDetails(textInfo: "Visibility", textInfo2: "\(weatherData.visibility/1000)km", imageInfo: "eye")
+                            }
+                            .padding()
+                            .background(Color(red: 0.557, green: 0.557, blue: 0.577, opacity: 0.2))
+                            .cornerRadius(10)
+                            .padding()
+                        }
+                        Spacer()
                     }
-                    .background(Color(red: 0.557, green: 0.557, blue: 0.577, opacity: 0.2))
-                    .cornerRadius(15)
-                    .padding()
-                    Spacer()
-                } else {
-                    ProgressView()
                 }
+                .navigationTitle("My Location")
             }
-            .onAppear {
-                locationManager.requestLocation()
+            else {
+                ProgressView()
             }
-            .onReceive(locationManager.$location) { location in
-                guard let location = location else { return }
-                fetchData(for: location)
-            }
-            .navigationTitle("Weather")
+        }
+        .onAppear {
+            locationManager.requestLocation()
+        }
+        .onReceive(locationManager.$location) { location in
+            guard let location = location else { return }
+            fetchData(for: location)
         }
     }
     
@@ -125,19 +93,38 @@ struct CurrentWeatherView: View {
     }
 }
 
+func convertTemperatureUnit(number: Double, selected: Int) -> String {
+    let celsius = number - 273.15
+    let fahrenheit = (number - 273.15)*9/5+32
+    let kelvin = number
+    
+    switch (selected){
+    case 1: return "\(Int(round(celsius)))ºC"
+    case 2: return "\(Int(round(fahrenheit)))ºF"
+    case 3: return "\(Int(round(kelvin)))ºK"
+    default: return ""
+    }
+}
+
 struct ExtraDetails: View {
     @State var textInfo: String = ""
+    @State var textInfo2: String = ""
     @State var imageInfo: String = ""
     var body: some View {
         VStack {
-            Image(systemName: imageInfo)
-            Text(textInfo)
+            HStack {
+                Image(systemName: imageInfo)
+                Text(textInfo)
+            }
+            //                Spacer().frame(height: 10)
+            Text(textInfo2)
+                .font(.title)
         }
-        .frame(height: 100)
+        .frame(width: 125, height: 100)
         .padding(.horizontal)
         .background(.gray)
         .foregroundColor(.white)
-        .cornerRadius(15)
+        .cornerRadius(10)
     }
 }
 

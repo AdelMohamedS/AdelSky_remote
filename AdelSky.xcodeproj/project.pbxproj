@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		E72DD7462AB4CE7E00E24C2E /* SearchWeatherView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E72DD7452AB4CE7E00E24C2E /* SearchWeatherView.swift */; };
+		E72DD7482AB50E1A00E24C2E /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = E72DD7472AB50E1A00E24C2E /* Model.swift */; };
 		E785C7E92AB394FF009BE60A /* AdelSkyApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = E785C7E82AB394FF009BE60A /* AdelSkyApp.swift */; };
 		E785C7ED2AB39501009BE60A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E785C7EC2AB39501009BE60A /* Assets.xcassets */; };
 		E785C7F02AB39501009BE60A /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E785C7EF2AB39501009BE60A /* Preview Assets.xcassets */; };
@@ -18,6 +19,7 @@
 
 /* Begin PBXFileReference section */
 		E72DD7452AB4CE7E00E24C2E /* SearchWeatherView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchWeatherView.swift; sourceTree = "<group>"; };
+		E72DD7472AB50E1A00E24C2E /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
 		E785C7E52AB394FF009BE60A /* AdelSky.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AdelSky.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E785C7E82AB394FF009BE60A /* AdelSkyApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdelSkyApp.swift; sourceTree = "<group>"; };
 		E785C7EC2AB39501009BE60A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -59,6 +61,7 @@
 			children = (
 				E785C7E82AB394FF009BE60A /* AdelSkyApp.swift */,
 				E785C7FC2AB499C1009BE60A /* CurrentWeatherView.swift */,
+				E72DD7472AB50E1A00E24C2E /* Model.swift */,
 				E72DD7452AB4CE7E00E24C2E /* SearchWeatherView.swift */,
 				E785C7FE2AB4B2B3009BE60A /* TabBarView.swift */,
 				E785C8002AB4B309009BE60A /* SettingsView.swift */,
@@ -149,6 +152,7 @@
 				E72DD7462AB4CE7E00E24C2E /* SearchWeatherView.swift in Sources */,
 				E785C7FD2AB499C1009BE60A /* CurrentWeatherView.swift in Sources */,
 				E785C8012AB4B309009BE60A /* SettingsView.swift in Sources */,
+				E72DD7482AB50E1A00E24C2E /* Model.swift in Sources */,
 				E785C7FF2AB4B2B3009BE60A /* TabBarView.swift in Sources */,
 				E785C7E92AB394FF009BE60A /* AdelSkyApp.swift in Sources */,
 			);
