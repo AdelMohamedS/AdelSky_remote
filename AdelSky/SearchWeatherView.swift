@@ -5,7 +5,8 @@ struct SearchWeatherView: View {
     @State private var weatherData: WeatherData?
     @Binding var selected: Int
     @Binding var extraDetailsSelection: Int
-    
+    @State var searchHistory: [String] = []
+
     var body: some View {
         let columns = [GridItem(.flexible()), GridItem(.flexible())]
         NavigationStack {
@@ -14,6 +15,9 @@ struct SearchWeatherView: View {
                     HStack {
                         if (extraDetailsSelection == 1) {Spacer()}
                         VStack {
+                            ForEach(searchHistory, id: \.self) { item in
+                                Text(item)
+                            }
                             AsyncImage(url: URL(string: "https://openweathermap.org/img/wn/\(weatherData.weather[0].icon)@4x.png"))
                             Text("\(weatherData.name), \(weatherData.sys.country)")
                                 .font(.title)
@@ -27,7 +31,7 @@ struct SearchWeatherView: View {
                             }
                             Text(weatherData.weather[0].description)
                                 .font(.title2)
-                            
+
                             if (extraDetailsSelection == 2) {
                                 LazyVGrid(columns: columns) {
                                     ExtraDetails(textInfo: "Feels like", textInfo2: convertTemperatureUnit(number: weatherData.main.feels_like, selected: selected), imageInfo: "thermometer.low")
@@ -66,27 +70,31 @@ struct SearchWeatherView: View {
             }
         }
         .searchable(text: $searchTerm, prompt: "Search Weather by City")
+        .onSubmit (of: .search) {
+            if !searchTerm.isEmpty { searchHistory.append(searchTerm) }
+        }
     }
-    
+
     func makeWeatherURL(for city: String) -> URL? {
         // Create a URLComponents object with the base URL of the API
         var components = URLComponents(string: "https://api.openweathermap.org/data/2.5/weather")
-        
+
         // Create a URLQueryItem object with the city name
         let cityQuery = URLQueryItem(name: "q", value: city)
-        
+
         // Create another URLQueryItem object with your API key
         let apiKeyQuery = URLQueryItem(name: "appid", value: "2ae6cc613328d5b5cdf16fc6985f3a73")
-        
+
         // Add the query items to the components object
         components?.queryItems = [cityQuery, apiKeyQuery]
-        
+
         // Return the URL object from the components object
         return components?.url
     }
-    
+
     func fetchWeatherData(from url: URL) {
         print("Fetching weather data from URL: \(url)")
+        print(searchHistory)
         URLSession.shared.dataTask(with: url) { data, response, error in
             // Check for errors and status code
             guard let data = data, error == nil, let response = response as? HTTPURLResponse else {
@@ -97,9 +105,9 @@ struct SearchWeatherView: View {
                 }
                 return
             }
-            
+
             print("Response Status Code: \(response.statusCode)")
-            
+
             if response.statusCode == 200 {
                 // Decode the JSON data into a WeatherData object
                 let decoder = JSONDecoder()
@@ -116,5 +124,5 @@ struct SearchWeatherView: View {
             }
         }.resume()
     }
-    
+
 }
