@@ -63,14 +63,12 @@ struct SearchWeatherView: View {
                 }
             }
             .navigationTitle("Search")
-            .onChange(of: searchTerm) { value in
-                if let url = makeWeatherURL(for: value) {
-                    fetchWeatherData(from: url)
-                }
-            }
         }
         .searchable(text: $searchTerm, prompt: "Search Weather by City")
         .onSubmit (of: .search) {
+            if let url = makeWeatherURL(for: searchTerm) {
+                fetchWeatherData(from: url)
+            }
             if !searchTerm.isEmpty { searchHistory.append(searchTerm) }
         }
     }
