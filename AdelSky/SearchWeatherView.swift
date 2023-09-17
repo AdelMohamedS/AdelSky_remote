@@ -5,8 +5,8 @@ struct SearchWeatherView: View {
     @State private var weatherData: WeatherData?
     @Binding var selected: Int
     @Binding var extraDetailsSelection: Int
-    @State var searchHistory: [String] = []
-
+    @Binding var searchHistory: [String]
+    
     var body: some View {
         let columns = [GridItem(.flexible()), GridItem(.flexible())]
         NavigationStack {
@@ -15,9 +15,6 @@ struct SearchWeatherView: View {
                     HStack {
                         if (extraDetailsSelection == 1) {Spacer()}
                         VStack {
-                            ForEach(searchHistory, id: \.self) { item in
-                                Text(item)
-                            }
                             AsyncImage(url: URL(string: "https://openweathermap.org/img/wn/\(weatherData.weather[0].icon)@4x.png"))
                             Text("\(weatherData.name), \(weatherData.sys.country)")
                                 .font(.title)
@@ -57,9 +54,22 @@ struct SearchWeatherView: View {
                             }
                         }
                     }
+                    if (!searchHistory.isEmpty) {
+                        Section("Search History", content: {
+                            ForEach(searchHistory, id: \.self) { item in
+                                Text(item)
+                            }
+                        })
+                    }
                 }
                 else {
-                    Text("Search Cities across the Globe")
+                    if (!searchHistory.isEmpty) {
+                        Section("Search History", content: {
+                            ForEach(searchHistory, id: \.self) { item in
+                                Text(item)
+                            }
+                        })
+                    }
                 }
             }
             .navigationTitle("Search")

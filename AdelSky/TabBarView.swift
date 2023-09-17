@@ -10,6 +10,7 @@ import SwiftUI
 struct TabBarView: View {
     @AppStorage ("key") var selected: Int = 1
     @AppStorage ("key2") var extraDetailsSelection: Int = 1
+    @AppStorage ("key3") var searchHistory: [String] = []
     @State var searchTerm: String = ""
     @State var weatherData: WeatherData?
     var body: some View {
@@ -18,11 +19,11 @@ struct TabBarView: View {
                 .tabItem {
                     Label("Current", systemImage: "location")
                 }
-            SearchWeatherView(searchTerm: $searchTerm, selected: $selected, extraDetailsSelection: $extraDetailsSelection)
+            SearchWeatherView(searchTerm: $searchTerm, selected: $selected, extraDetailsSelection: $extraDetailsSelection, searchHistory: $searchHistory)
                 .tabItem {
                     Label("Search", systemImage: "magnifyingglass")
                 }
-            SettingsView(selected: $selected, extraDetailsSelection: $extraDetailsSelection)
+            SettingsView(selected: $selected, extraDetailsSelection: $extraDetailsSelection, searchHistory: $searchHistory)
                 .tabItem {
                     Label("Settings", systemImage: "gear")
                 }
