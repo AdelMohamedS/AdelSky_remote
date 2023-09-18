@@ -11,31 +11,34 @@ struct SettingsView: View {
     @Binding var selected: Int
     @Binding var extraDetailsSelection: Int
     @Binding var searchHistory: [String]
+    @Binding var selectedLanguage: Int
     
     var body: some View {
         NavigationStack {
             List {
-                Picker(selection: $selected, label: Text("Temperature Units")) {
+                Picker(selection: $selected, label: Text("Temperature Units".localized())) {
                     Text("°C").tag(1)
                     Text("°F").tag(2)
                     Text("°K").tag(3)
                 }
                 .pickerStyle(.navigationLink)
                 
-                Picker(selection: $extraDetailsSelection, label: Text("Extra Details View")) {
-                    Text("Horizontal").tag(1)
-                    Text("Vertical").tag(2)
+                Picker(selection: $extraDetailsSelection, label: Text("Extra Details View".localized())) {
+                    Text("Horizontal".localized()).tag(1)
+                    Text("Vertical".localized()).tag(2)
                 }
                 .pickerStyle(.navigationLink)
                 
+                .pickerStyle(.navigationLink)
+                
                 Section {
-                    Button("Clear Search History") {
+                    Button("Clear Search History".localized()) {
                         clearArray(&searchHistory)
                     }
                 }
             }
 
-            .navigationTitle("Settings")
+            .navigationTitle("Settings".localized())
         }
     }
 }

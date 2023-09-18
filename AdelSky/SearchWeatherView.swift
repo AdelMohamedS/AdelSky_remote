@@ -12,74 +12,98 @@ struct SearchWeatherView: View {
         NavigationStack {
             List {
                 if let weatherData = weatherData {
-                    HStack {
-                        if (extraDetailsSelection == 1) {Spacer()}
-                        VStack {
-                            AsyncImage(url: URL(string: "https://openweathermap.org/img/wn/\(weatherData.weather[0].icon)@4x.png"))
-                            Text("\(weatherData.name), \(weatherData.sys.country)")
-                                .font(.title)
-                            Text(convertTemperatureUnit(number: weatherData.main.temp, selected: selected))
-                                .font(.largeTitle)
-                            HStack {
-                                Text("H: \(convertTemperatureUnit(number: weatherData.main.temp_max, selected: selected))")
-                                    .font(.subheadline)
-                                Text("L: \(convertTemperatureUnit(number: weatherData.main.temp_min, selected: selected))")
-                                    .font(.subheadline)
-                            }
-                            Text(weatherData.weather[0].description)
-                                .font(.title2)
+                    if searchTerm.isEmpty {
+                        if (!searchHistory.isEmpty) {
+                            Section("Search History".localized(), content: {
+                                ForEach(searchHistory, id: \.self) { item in
+                                    Button(item) {
+                                        searchTerm = item
+                                        if let url = makeWeatherURL(for: searchTerm) {
+                                            fetchWeatherData(from: url)
+                                        }
+                                    }
+                                }
+                            })
+                        }
+                    }
+                    else {
+                        HStack {
+                            if (extraDetailsSelection == 1) {Spacer()}
+                            VStack {
+                                AsyncImage(url: URL(string: "https://openweathermap.org/img/wn/\(weatherData.weather[0].icon)@4x.png"))
+                                Text("\(weatherData.name), \(weatherData.sys.country)")
+                                    .font(.title)
+                                Text(convertTemperatureUnit(number: weatherData.main.temp, selected: selected))
+                                    .font(.largeTitle)
+                                HStack {
+                                    Text("H: \(convertTemperatureUnit(number: weatherData.main.temp_max, selected: selected))")
+                                        .font(.subheadline)
+                                    Text("L: \(convertTemperatureUnit(number: weatherData.main.temp_min, selected: selected))")
+                                        .font(.subheadline)
+                                }
+                                Text(weatherData.weather[0].description)
+                                    .font(.title2)
 
-                            if (extraDetailsSelection == 2) {
-                                LazyVGrid(columns: columns) {
-                                    ExtraDetails(textInfo: "Feels like", textInfo2: convertTemperatureUnit(number: weatherData.main.feels_like, selected: selected), imageInfo: "thermometer.low")
-                                    ExtraDetails(textInfo: "Humidity", textInfo2: "\(Int(weatherData.main.humidity))%", imageInfo: "humidity")
-                                    ExtraDetails(textInfo: "Wind Speed", textInfo2: "\(Int(round(weatherData.wind.speed)))m/s", imageInfo: "wind")
-                                    ExtraDetails(textInfo: "Wind Degrees", textInfo2: "\(Int(weatherData.wind.deg))", imageInfo: "wind.circle")
-                                    ExtraDetails(textInfo: "Pressure", textInfo2: "\(Int(weatherData.main.pressure))hPa", imageInfo: "rectangle.compress.vertical")
-                                    ExtraDetails(textInfo: "Visibility", textInfo2: "\(weatherData.visibility/1000)km", imageInfo: "eye")
+                                if (extraDetailsSelection == 2) {
+                                    LazyVGrid(columns: columns) {
+                                        ExtraDetails(textInfo: "Feels Like".localized(), textInfo2: convertTemperatureUnit(number: weatherData.main.feels_like, selected: selected), imageInfo: "thermometer.low")
+                                        ExtraDetails(textInfo: "Humidity".localized(), textInfo2: "\(Int(weatherData.main.humidity))%", imageInfo: "humidity")
+                                        ExtraDetails(textInfo: "Wind Speed".localized(), textInfo2: "\(Int(round(weatherData.wind.speed)))m/s", imageInfo: "wind")
+                                        ExtraDetails(textInfo: "Wind Degrees".localized(), textInfo2: "\(Int(weatherData.wind.deg))", imageInfo: "wind.circle")
+                                        ExtraDetails(textInfo: "Pressure".localized(), textInfo2: "\(Int(weatherData.main.pressure))hPa", imageInfo: "rectangle.compress.vertical")
+                                        ExtraDetails(textInfo: "Visibility".localized(), textInfo2: "\(weatherData.visibility/1000)km", imageInfo: "eye")
+                                    }
+                                }
+                            }
+                            if (extraDetailsSelection == 1) {Spacer()}
+                        }
+                        if (extraDetailsSelection == 1){
+                            ScrollView (.horizontal){
+                                HStack {
+                                    ExtraDetails(textInfo: "Feels Like".localized(), textInfo2: convertTemperatureUnit(number: weatherData.main.feels_like, selected: selected), imageInfo: "thermometer.low")
+                                    ExtraDetails(textInfo: "Humidity".localized(), textInfo2: "\(Int(weatherData.main.humidity))%", imageInfo: "humidity")
+                                    ExtraDetails(textInfo: "Wind Speed".localized(), textInfo2: "\(Int(round(weatherData.wind.speed)))m/s", imageInfo: "wind")
+                                    ExtraDetails(textInfo: "Wind Degrees".localized(), textInfo2: "\(Int(weatherData.wind.deg))", imageInfo: "wind.circle")
+                                    ExtraDetails(textInfo: "Pressure".localized(), textInfo2: "\(Int(weatherData.main.pressure))hPa", imageInfo: "rectangle.compress.vertical".localized())
+                                    ExtraDetails(textInfo: "Visibility".localized(), textInfo2: "\(weatherData.visibility/1000)km", imageInfo: "eye")
                                 }
                             }
                         }
-                        if (extraDetailsSelection == 1) {Spacer()}
-                    }
-                    if (extraDetailsSelection == 1){
-                        ScrollView (.horizontal){
-                            HStack {
-                                ExtraDetails(textInfo: "Feels like", textInfo2: convertTemperatureUnit(number: weatherData.main.feels_like, selected: selected), imageInfo: "thermometer.low")
-                                ExtraDetails(textInfo: "Humidity", textInfo2: "\(Int(weatherData.main.humidity))%", imageInfo: "humidity")
-                                ExtraDetails(textInfo: "Wind Speed", textInfo2: "\(Int(round(weatherData.wind.speed)))m/s", imageInfo: "wind")
-                                ExtraDetails(textInfo: "Wind Degrees", textInfo2: "\(Int(weatherData.wind.deg))", imageInfo: "wind.circle")
-                                ExtraDetails(textInfo: "Pressure", textInfo2: "\(Int(weatherData.main.pressure))hPa", imageInfo: "rectangle.compress.vertical")
-                                ExtraDetails(textInfo: "Visibility", textInfo2: "\(weatherData.visibility/1000)km", imageInfo: "eye")
-                            }
-                        }
-                    }
-                    if (!searchHistory.isEmpty) {
-                        Section("Search History", content: {
-                            ForEach(searchHistory, id: \.self) { item in
-                                Text(item)
-                            }
-                        })
                     }
                 }
                 else {
                     if (!searchHistory.isEmpty) {
-                        Section("Search History", content: {
+                        Section("Search History".localized(), content: {
                             ForEach(searchHistory, id: \.self) { item in
-                                Text(item)
+                                Button(item) {
+                                    searchTerm = item
+                                    if let url = makeWeatherURL(for: searchTerm) {
+                                        fetchWeatherData(from: url)
+                                    }
+                                }
                             }
                         })
                     }
                 }
             }
-            .navigationTitle("Search")
+            .navigationTitle("Search".localized())
         }
-        .searchable(text: $searchTerm, prompt: "Search Weather by City")
+        .searchable(text: $searchTerm, prompt: "Search Weather by City".localized())
+//        .searchSuggestions {
+//            ForEach(searchHistory, id: \.self) { item in
+//                Button(item) {
+//                    searchTerm = item
+//                    if let url = makeWeatherURL(for: searchTerm) {
+//                        fetchWeatherData(from: url)
+//                    }
+//                }
+//            }
+//        }
         .onSubmit (of: .search) {
             if let url = makeWeatherURL(for: searchTerm) {
                 fetchWeatherData(from: url)
             }
-            if !searchTerm.isEmpty { searchHistory.append(searchTerm) }
+            if !searchTerm.isEmpty && !searchHistory.contains(searchTerm) { searchHistory.append(searchTerm) }
         }
     }
 

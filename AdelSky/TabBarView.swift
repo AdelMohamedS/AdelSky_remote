@@ -11,19 +11,21 @@ struct TabBarView: View {
     @AppStorage ("key") var selected: Int = 1
     @AppStorage ("key2") var extraDetailsSelection: Int = 1
     @AppStorage ("key3") var searchHistory: [String] = []
+    @AppStorage ("key4") var selectedLanguage: Int = 1
     @State var searchTerm: String = ""
     @State var weatherData: WeatherData?
+    
     var body: some View {
         TabView {
             CurrentWeatherView(weatherData: $weatherData, selected: $selected, extraDetailsSelection: $extraDetailsSelection)
                 .tabItem {
-                    Label("Current", systemImage: "location")
+                    Label("Current".localized(), systemImage: "location")
                 }
             SearchWeatherView(searchTerm: $searchTerm, selected: $selected, extraDetailsSelection: $extraDetailsSelection, searchHistory: $searchHistory)
                 .tabItem {
                     Label("Search", systemImage: "magnifyingglass")
                 }
-            SettingsView(selected: $selected, extraDetailsSelection: $extraDetailsSelection, searchHistory: $searchHistory)
+            SettingsView(selected: $selected, extraDetailsSelection: $extraDetailsSelection, searchHistory: $searchHistory, selectedLanguage: $selectedLanguage)
                 .tabItem {
                     Label("Settings", systemImage: "gear")
                 }

@@ -1,0 +1,25 @@
+/* 
+  Localizable.strings
+  AdelSky
+
+  Created by Adel The Adroit  on 18/09/2023.
+  
+*/
+"Temperature Units" = "وحدات درجة الحرارة";
+"Extra Details View" = "عرض التفاصيل الإضافية";
+"Language" = "اللغة";
+"Horizontal" = "أفقي";
+"Vertical" = "رَأسِيّ";
+"Clear Search History" = "امسح تاريخ البحث";
+"Settings" = "الإعدادات";
+"Feels Like" = "يبدو أنه";
+"Humidity" = "الرطوبة";
+"Wind Speed" = "سرعة الرياح";
+"Wind Degrees" = "درجات الرياح";
+"Pressure" = "الضغط";
+"Visibility" = "الرؤية";
+"My Location" = "موقعي";
+"Search History" = "تاريخ البحث";
+"Search" = "البحث";
+"Search Weather by City" = "ابحث الطقس حسب المدينة";
+"Current" = "موقعي";

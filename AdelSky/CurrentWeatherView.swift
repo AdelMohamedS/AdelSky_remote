@@ -30,12 +30,12 @@ struct CurrentWeatherView: View {
                         if (extraDetailsSelection == 1){
                             ScrollView (.horizontal){
                                 HStack {
-                                    ExtraDetails(textInfo: "Feels like", textInfo2: convertTemperatureUnit(number: weatherData.main.feels_like, selected: selected), imageInfo: "thermometer.low")
-                                    ExtraDetails(textInfo: "Humidity", textInfo2: "\(Int(weatherData.main.humidity))%", imageInfo: "humidity")
-                                    ExtraDetails(textInfo: "Wind Speed", textInfo2: "\(Int(round(weatherData.wind.speed)))m/s", imageInfo: "wind")
-                                    ExtraDetails(textInfo: "Wind Degrees", textInfo2: "\(Int(weatherData.wind.deg))", imageInfo: "wind.circle")
-                                    ExtraDetails(textInfo: "Pressure", textInfo2: "\(Int(weatherData.main.pressure))hPa", imageInfo: "rectangle.compress.vertical")
-                                    ExtraDetails(textInfo: "Visibility", textInfo2: "\(weatherData.visibility/1000)km", imageInfo: "eye")
+                                    ExtraDetails(textInfo: "Feels Like".localized(), textInfo2: convertTemperatureUnit(number: weatherData.main.feels_like, selected: selected), imageInfo: "thermometer.low")
+                                    ExtraDetails(textInfo: "Humidity".localized(), textInfo2: "\(Int(weatherData.main.humidity))%", imageInfo: "humidity")
+                                    ExtraDetails(textInfo: "Wind Speed".localized(), textInfo2: "\(Int(round(weatherData.wind.speed)))m/s", imageInfo: "wind")
+                                    ExtraDetails(textInfo: "Wind Degrees".localized(), textInfo2: "\(Int(weatherData.wind.deg))", imageInfo: "wind.circle")
+                                    ExtraDetails(textInfo: "Pressure".localized(), textInfo2: "\(Int(weatherData.main.pressure))hPa", imageInfo: "rectangle.compress.vertical")
+                                    ExtraDetails(textInfo: "Visibility".localized(), textInfo2: "\(weatherData.visibility/1000)km", imageInfo: "eye")
                                 }
                                 .padding()
                             }
@@ -45,12 +45,12 @@ struct CurrentWeatherView: View {
                         }
                         else if (extraDetailsSelection == 2) {
                             LazyVGrid(columns: columns) {
-                                ExtraDetails(textInfo: "Feels like", textInfo2: convertTemperatureUnit(number: weatherData.main.feels_like, selected: selected), imageInfo: "thermometer.low")
-                                ExtraDetails(textInfo: "Humidity", textInfo2: "\(Int(weatherData.main.humidity))%", imageInfo: "humidity")
-                                ExtraDetails(textInfo: "Wind Speed", textInfo2: "\(Int(round(weatherData.wind.speed)))m/s", imageInfo: "wind")
-                                ExtraDetails(textInfo: "Wind Degrees", textInfo2: "\(Int(weatherData.wind.deg))", imageInfo: "wind.circle")
-                                ExtraDetails(textInfo: "Pressure", textInfo2: "\(Int(weatherData.main.pressure))hPa", imageInfo: "rectangle.compress.vertical")
-                                ExtraDetails(textInfo: "Visibility", textInfo2: "\(weatherData.visibility/1000)km", imageInfo: "eye")
+                                ExtraDetails(textInfo: "Feels Like".localized(), textInfo2: convertTemperatureUnit(number: weatherData.main.feels_like, selected: selected), imageInfo: "thermometer.low")
+                                ExtraDetails(textInfo: "Humidity".localized(), textInfo2: "\(Int(weatherData.main.humidity))%", imageInfo: "humidity")
+                                ExtraDetails(textInfo: "Wind Speed".localized(), textInfo2: "\(Int(round(weatherData.wind.speed)))m/s", imageInfo: "wind")
+                                ExtraDetails(textInfo: "Wind Degrees".localized(), textInfo2: "\(Int(weatherData.wind.deg))", imageInfo: "wind.circle")
+                                ExtraDetails(textInfo: "Pressure".localized(), textInfo2: "\(Int(weatherData.main.pressure))hPa", imageInfo: "rectangle.compress.vertical")
+                                ExtraDetails(textInfo: "Visibility".localized(), textInfo2: "\(weatherData.visibility/1000)km", imageInfo: "eye")
                             }
                             .padding()
                             .background(Color(red: 0.557, green: 0.557, blue: 0.577, opacity: 0.2))
@@ -60,7 +60,7 @@ struct CurrentWeatherView: View {
                         Spacer()
                     }
                 }
-                .navigationTitle("My Location")
+                .navigationTitle("My Location".localized())
             }
             else {
                 ProgressView()
@@ -116,7 +116,6 @@ struct ExtraDetails: View {
                 Image(systemName: imageInfo)
                 Text(textInfo)
             }
-            //                Spacer().frame(height: 10)
             Text(textInfo2)
                 .font(.title)
         }
