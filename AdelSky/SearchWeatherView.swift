@@ -89,16 +89,6 @@ struct SearchWeatherView: View {
             .navigationTitle("Search".localized())
         }
         .searchable(text: $searchTerm, prompt: "Search Weather by City".localized())
-//        .searchSuggestions {
-//            ForEach(searchHistory, id: \.self) { item in
-//                Button(item) {
-//                    searchTerm = item
-//                    if let url = makeWeatherURL(for: searchTerm) {
-//                        fetchWeatherData(from: url)
-//                    }
-//                }
-//            }
-//        }
         .onSubmit (of: .search) {
             if let url = makeWeatherURL(for: searchTerm) {
                 fetchWeatherData(from: url)
@@ -108,19 +98,19 @@ struct SearchWeatherView: View {
     }
 
     func makeWeatherURL(for city: String) -> URL? {
-        // Create a URLComponents object with the base URL of the API
+        
         var components = URLComponents(string: "https://api.openweathermap.org/data/2.5/weather")
 
-        // Create a URLQueryItem object with the city name
+        
         let cityQuery = URLQueryItem(name: "q", value: city)
 
-        // Create another URLQueryItem object with your API key
+        
         let apiKeyQuery = URLQueryItem(name: "appid", value: "2ae6cc613328d5b5cdf16fc6985f3a73")
 
-        // Add the query items to the components object
+        
         components?.queryItems = [cityQuery, apiKeyQuery]
 
-        // Return the URL object from the components object
+        
         return components?.url
     }
 
@@ -128,7 +118,7 @@ struct SearchWeatherView: View {
         print("Fetching weather data from URL: \(url)")
         print(searchHistory)
         URLSession.shared.dataTask(with: url) { data, response, error in
-            // Check for errors and status code
+            
             guard let data = data, error == nil, let response = response as? HTTPURLResponse else {
                 if let error = error {
                     print("Error: \(error)")
@@ -141,10 +131,10 @@ struct SearchWeatherView: View {
             print("Response Status Code: \(response.statusCode)")
 
             if response.statusCode == 200 {
-                // Decode the JSON data into a WeatherData object
+                
                 let decoder = JSONDecoder()
                 if let weatherData = try? decoder.decode(WeatherData.self, from: data) {
-                    // Update the state variable on the main thread
+                    
                     DispatchQueue.main.async {
                         self.weatherData = weatherData
                     }
